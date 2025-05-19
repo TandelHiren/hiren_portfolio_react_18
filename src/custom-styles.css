@@ -1,0 +1,133 @@
+.d-flex {
+  display: flex;
+}
+.stack {
+  display: flex;
+  flex-direction: column;
+}
+.align-center {
+  align-items: center;
+}
+.justify-center {
+  justify-content: center;
+}
+.overflow-auto {
+  overflow: auto;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.position-absolute {
+  position: absolute;
+}
+
+.position-sticky {
+  position: sticky;
+}
+
+.border-primary {
+  border: 1px solid var(--mantine-color-primary-7);
+}
+
+.border-gray-1 {
+  border: 1px solid var(--mantine-color-gray-1);
+}
+
+.border-top-gray-1 {
+  border-top: 1px solid var(--mantine-color-gray-1);
+}
+
+.border-bottom-gray-1 {
+  border-bottom: 1px solid var(--mantine-color-gray-1);
+}
+
+.border-right-gray-1 {
+  border-right: 1px solid var(--mantine-color-gray-1);
+}
+
+.border-left-gray-1 {
+  border-left: 1px solid var(--mantine-color-gray-1);
+}
+
+.br-4 {
+  border-radius: 4px;
+}
+.br-10 {
+  border-radius: 10px;
+}
+.br-12 {
+  border-radius: 12px;
+}
+.br-full {
+  border-radius: 9999px;
+}
+.br-c-gray-2 {
+  border-color: var(--mantine-color-gray-2);
+}
+.w-100 {
+  width: 100%;
+}
+.color-gray-5 {
+  color: var(--mantine-color-gray-5);
+}
+.users-form {
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.identity-provider-list-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.border-rounded-sm {
+  border-radius: var(--mantine-radius-sm);
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.padding-bottom-10px {
+  padding-bottom: 10px;
+}
+
+.react-flow__attribution {
+  display: none !important;
+}
+
+.mantine-Input-input {
+  outline: none !important;
+}
+.mantine-Input-input:focus {
+  border: 2px solid var(--mantine-color-primary-7) !important;
+  outline: none !important;
+}
+
+.tenant-list-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.mantine-AppShell-navbar {
+  overflow: hidden;
+  transition: all 0.3s ease-in-out !important;
+  white-space: nowrap;
+}

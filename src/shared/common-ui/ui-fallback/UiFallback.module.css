@@ -1,0 +1,33 @@
+.root {
+    padding: 40px;
+    height: 100%;
+    overflow: auto;
+    display: flex;
+    /* 
+    background-image: linear-gradient(transparent 95%, rgba(0, 0, 0, 0.05) 5%),
+    linear-gradient(90deg, transparent 95%, rgba(0, 0, 0, 0.05) 5%);
+    background-size: 20px 20px; 
+    */
+}
+
+.hero {
+    margin: auto;
+    padding: 40px;
+    border-radius: var(--mantine-radius-default);
+    align-items: center;
+}
+
+
+.title {
+    font-weight: 900;
+    font-size: 34px;
+    margin-bottom: var(--mantine-spacing-md);
+    font-family: 'Greycliff CF', var(--mantine-font-family);
+}
+
+/* Responsive font size adjustment */
+@media (max-width: 576px) {
+    .title {
+        font-size: 32px;
+    }
+}
