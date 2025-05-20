@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { Burger, Container, Group, Text, ActionIcon, rem } from "@mantine/core";
+import {
+  Burger,
+  Container,
+  Group,
+  Text,
+  ActionIcon,
+  rem,
+  Flex,
+} from "@mantine/core";
 import { IconSunMoon } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import classes from "./Header.module.css";
@@ -34,24 +42,22 @@ export function Header() {
 
   return (
     <header className={classes.header}>
-      <Container size="lg" className={classes.inner}>
-        <Group gap="xs" justify="flex-start">
-          <Text fw={700} size={rem(16)} className={classes.logo}>
-            {"</>"} Hiren Tandel
-          </Text>
-        </Group>
+      {/* <Container size="lg" className={classes.inner}> */}
+      <Flex justify="space-between" align="center" w={"100%"}>
+        {/* Left: Logo */}
+        <Text fw={700} size={rem(16)} className={classes.logo} c="white">
+          {"</>"} Hiren Tandel
+        </Text>
 
+        {/* Right: Nav links and toggle */}
         <Group gap={20} className={classes.nav} visibleFrom="sm">
           {items}
-        </Group>
-
-        <Group gap="sm">
-          <ActionIcon variant="filled" radius="xl" color="primary">
+          <ActionIcon variant="default" radius="xl">
             <IconSunMoon size={18} />
           </ActionIcon>
-          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
         </Group>
-      </Container>
+      </Flex>
+      {/* </Container> */}
     </header>
   );
 }

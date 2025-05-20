@@ -1,28 +1,18 @@
 import { useState, useEffect } from "react";
 import {
   Container,
-  Stack,
   Title,
   Text,
   Button,
-  Group,
-  ThemeIcon,
   rem,
   Box,
-  Flex,
   Image,
+  Stack,
 } from "@mantine/core";
+import { IconDownload } from "@tabler/icons-react";
 import { useIntersection } from "@mantine/hooks";
-import {
-  IconBrandGit,
-  IconBrandLinkedin,
-  IconBrandReact,
-  IconBrandRedux,
-  IconBrandTypescript,
-  IconCode,
-  IconDownload,
-} from "@tabler/icons-react";
 import classes from "./Hero.module.css";
+import { notifications } from "@mantine/notifications";
 
 export default function Hero() {
   const [typedText, setTypedText] = useState("");
@@ -59,125 +49,77 @@ export default function Hero() {
 
   const isVisible = entry?.isIntersecting;
 
+  const handleDownload = () => {
+    notifications.show({
+      title: "Thanks!",
+      message: "Your resume is downloading...",
+      color: "teal",
+    });
+  };
+
   return (
     <Box
       ref={ref}
       className={`${classes.heroSection} ${isVisible ? classes.fadeIn : ""}`}
     >
       <Box className={classes.backgroundImage} />
-      <Box className={classes.circleBlue} />
-      <Box className={classes.circleGreen} />
 
       <Container size="lg" className={classes.container}>
-        <Flex
-          direction={{ base: "column", md: "row" }}
-          align="center"
-          justify="space-between"
-          gap="xl"
-        >
-          <Stack gap="xl" maw={600}>
-            <Box>
-              <Text className={classes.introText}>Hello, I'm</Text>
-
-              <Title
-                order={1}
-                className={classes.mainTitle}
-                size={rem(60)}
-                fw={900}
-              >
-                Hiren Tandel
-              </Title>
-
-              <Text className={classes.subText} mt="md">
-                Crafting Scalable Frontends with React & Precision
-              </Text>
-
-              <Box className={classes.typingBox}>
-                <Text className={classes.typedText} fw={700}>
-                  {typedText}
-                  <span className={classes.blink}>|</span>
-                </Text>
-              </Box>
-            </Box>
-
-            <Group mt="xl">
-              <Button
-                component="a"
-                href="https://drive.google.com/drive/folders/10s5_1OHqvTpgrRnWcC-vwyKavY3J0u6A?authuser=0"
-                target="_blank"
-                size="lg"
-                leftSection={<IconDownload size={18} />}
-              >
-                Download Resume
-              </Button>
-              <Button
-                component="a"
-                href="https://www.linkedin.com/in/hirenkumar-tandel-a41a88129/"
-                target="_blank"
-                variant="outline"
-                size="lg"
-                leftSection={<IconBrandLinkedin size={18} />}
-              >
-                Connect on LinkedIn
-              </Button>
-            </Group>
-          </Stack>
-
-          <Box className={`${classes.heroImageWrapper} ${classes.float}`}>
-            <Box className={classes.heroGlow} />
-            <Box w={350} h={350} className={classes.heroImage}>
+        <Box className={classes.centerContent}>
+          <Box className={classes.imageCircleWrapper}>
+            <Box className={classes.imageCircle}>
               <Image
-                radius="xl"
                 src="src/assets/images/hiren_portfolio.jpg"
                 alt="Hiren Tandel"
                 className={classes.heroImage}
+                radius="xl"
               />
             </Box>
-          </Box>
-        </Flex>
 
-        <Group justify="center" gap="xl" mt={60}>
-          <ThemeIcon
-            size={60}
-            radius="xl"
-            variant="light"
-            className={`${classes.techIcon} ${classes["float-4s"]}`}
-          >
-            <IconBrandReact size={30} />
-          </ThemeIcon>
-          <ThemeIcon
-            size={50}
-            radius="xl"
-            variant="light"
-            className={`${classes.techIcon} ${classes["float-5s"]}`}
-          >
-            <IconBrandTypescript size={25} />
-          </ThemeIcon>
-          <ThemeIcon
-            size={70}
-            radius="xl"
-            variant="light"
-            className={`${classes.techIcon} ${classes["float-6s"]}`}
-          >
-            <IconBrandRedux size={35} />
-          </ThemeIcon>
-          <ThemeIcon
-            size={55}
-            radius="xl"
-            variant="light"
-            className={`${classes.techIcon} ${classes["float-4_5s"]}`}
-          >
-            <IconCode size={28} />
-          </ThemeIcon>
-          <ThemeIcon
-            size={45}
-            radius="xl"
-            variant="light"
-            className={`${classes.techIcon} ${classes["float-5_5s"]}`}
-          >
-            <IconBrandGit size={22} />
-          </ThemeIcon>
-        </Group>
+            <svg viewBox="0 0 200 200" className={classes.rotatingRing}>
+              <defs>
+                <path
+                  id="circlePath"
+                  d="M 100, 100
+         m -90, 0
+         a 90,90 0 1,1 180,0
+         a 90,90 0 1,1 -180,0"
+                />
+              </defs>
+              <text>
+                <textPath href="#circlePath" startOffset="0%">
+                  PROFESSIONAL WEB DEVELOPER • HIREN TANDEL • 7+ YEARS
+                  EXPERIENCE •
+                </textPath>
+              </text>
+            </svg>
+          </Box>
+
+          <Stack align="center" gap="md" mt="xl">
+            <Title className={classes.mainTitle} order={1} size={rem(42)}>
+              I'm Hiren Tandel
+            </Title>
+
+            <Box className={classes.typingBox}>
+              <Text className={classes.typedText} c="#00e6e6" size="xl">
+                {typedText}
+                <span className={classes.blink}>|</span>
+              </Text>
+            </Box>
+
+            <Button
+              component="a"
+              href="./Hiren_Tandel_Resume.pdf"
+              download
+              size="md"
+              className={classes.hireButton}
+              leftSection={<IconDownload size={18} />}
+              onClick={handleDownload}
+            >
+              Hire Me
+            </Button>
+          </Stack>
+        </Box>
       </Container>
     </Box>
   );
