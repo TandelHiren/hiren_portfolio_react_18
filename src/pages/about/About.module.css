@@ -1,0 +1,9 @@
+.section {
+  padding: 80px 0;
+  background-color: var(--mantine-color-gray-light);
+}
+
+.paper {
+  background-color: var(--mantine-color-body);
+  transition: transform 0.3s ease;
+}

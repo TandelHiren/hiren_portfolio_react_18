@@ -1,126 +1,153 @@
-import { useState, useEffect } from "react";
-import {
-  Container,
-  Title,
-  Text,
-  Button,
-  rem,
-  Box,
-  Image,
-  Stack,
-} from "@mantine/core";
-import { IconDownload } from "@tabler/icons-react";
-import { useIntersection } from "@mantine/hooks";
-import classes from "./Hero.module.css";
-import { notifications } from "@mantine/notifications";
+import { useCallback, useMemo } from "react";
+import { Box, Text, Container, Paper, Button } from "@mantine/core";
+import Particles from "react-tsparticles";
+import { loadSlim } from "tsparticles-slim";
+import { loadImageShape } from "tsparticles-shape-image";
+import { Typewriter } from "react-simple-typewriter";
+import About from "../about/About";
 
-export default function Hero() {
-  const [typedText, setTypedText] = useState("");
-  const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const { ref, entry } = useIntersection({ threshold: 0.2 });
+export default function HeroSection() {
+  const particlesInit = useCallback(async (engine: any) => {
+    await loadSlim(engine);
+    await loadImageShape(engine);
+  }, []);
 
-  const phrases = [
-    "Senior Frontend Developer",
-    "Microfrontend Expert",
-    "TypeScript Fan",
-    "Clean Code Advocate",
-  ];
-
-  useEffect(() => {
-    const typeSpeed = isDeleting ? 50 : 100;
-    const currentPhrase = phrases[currentPhraseIndex];
-
-    const timer = setTimeout(() => {
-      if (!isDeleting && typedText === currentPhrase) {
-        setTimeout(() => setIsDeleting(true), 1500);
-      } else if (isDeleting && typedText === "") {
-        setIsDeleting(false);
-        setCurrentPhraseIndex((currentPhraseIndex + 1) % phrases.length);
-      } else if (isDeleting) {
-        setTypedText(currentPhrase.substring(0, typedText.length - 1));
-      } else {
-        setTypedText(currentPhrase.substring(0, typedText.length + 1));
-      }
-    }, typeSpeed);
-
-    return () => clearTimeout(timer);
-  }, [typedText, currentPhraseIndex, isDeleting]);
-
-  const isVisible = entry?.isIntersecting;
-
-  const handleDownload = () => {
-    notifications.show({
-      title: "Thanks!",
-      message: "Your resume is downloading...",
-      color: "teal",
-    });
-  };
+  const MemoizedParticles = useMemo(
+    () => (
+      <Particles
+        id="tsparticles"
+        init={particlesInit}
+        options={{
+          fullScreen: false,
+          particles: {
+            number: {
+              value: 16,
+              density: { enable: true, area: 800 },
+            },
+            color: { value: "#CCC" },
+            shape: {
+              type: ["image", "circle"],
+              image: [
+                { src: "/icons8-angular.svg", height: 20, width: 23 },
+                { src: "/icons8-react-native.svg", height: 20, width: 20 },
+                { src: "/icons8-vue-js.svg", height: 20, width: 20 },
+                { src: "/icons8-storybook.svg", height: 20, width: 20 },
+                { src: "/icons8-vs-code.svg", height: 20, width: 20 },
+              ],
+            },
+            size: {
+              value: { min: 10, max: 25 },
+              animation: {
+                enable: true,
+                speed: 2,
+                minimumValue: 10,
+                sync: false,
+              },
+            },
+            opacity: {
+              value: 0.3,
+              random: true,
+            },
+            move: {
+              enable: true,
+              speed: 0.5,
+              direction: "none",
+              outModes: { default: "out" },
+            },
+            links: { enable: false },
+          },
+          interactivity: {
+            events: {
+              onHover: { enable: true, mode: "bubble" },
+              resize: true,
+            },
+            modes: {
+              bubble: {
+                distance: 100,
+                size: 30,
+                duration: 2,
+                opacity: 0.8,
+                speed: 2,
+              },
+            },
+          },
+          detectRetina: true,
+        }}
+        style={{
+          position: "absolute",
+          width: "100%",
+          height: "100%",
+          top: 0,
+          left: 0,
+          zIndex: 0,
+          pointerEvents: "none", // 👈 avoids blocking mouse/text
+        }}
+      />
+    ),
+    [particlesInit]
+  );
 
   return (
-    <Box
-      ref={ref}
-      className={`${classes.heroSection} ${isVisible ? classes.fadeIn : ""}`}
-    >
-      <Box className={classes.backgroundImage} />
+    <>
+      <Box
+        pos="relative"
+        h="100vh"
+        w="100%"
+        style={{ backgroundColor: "#000", overflow: "hidden" }}
+      >
+        {MemoizedParticles}
 
-      <Container size="lg" className={classes.container}>
-        <Box className={classes.centerContent}>
-          <Box className={classes.imageCircleWrapper}>
-            <Box className={classes.imageCircle}>
-              <Image
-                src="src/assets/images/hiren_portfolio.jpg"
-                alt="Hiren Tandel"
-                className={classes.heroImage}
-                radius="xl"
+        <Container
+          h="100%"
+          w="100%"
+          pos="relative"
+          style={{
+            zIndex: 2,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+            textAlign: "center",
+          }}
+        >
+          <Text fz={48} fw={900} c="white">
+            I'm a{" "}
+            <span style={{ color: "#00e0ff" }}>
+              <Typewriter
+                words={[
+                  "Web Developer",
+                  "Designer",
+                  "Creator",
+                  "Problem Solver",
+                ]}
+                loop={0}
+                cursor
+                cursorStyle="|"
+                typeSpeed={80}
+                deleteSpeed={50}
+                delaySpeed={1500}
               />
-            </Box>
-
-            <svg viewBox="0 0 200 200" className={classes.rotatingRing}>
-              <defs>
-                <path
-                  id="circlePath"
-                  d="M 100, 100
-         m -90, 0
-         a 90,90 0 1,1 180,0
-         a 90,90 0 1,1 -180,0"
-                />
-              </defs>
-              <text>
-                <textPath href="#circlePath" startOffset="0%">
-                  PROFESSIONAL WEB DEVELOPER • HIREN TANDEL • 7+ YEARS
-                  EXPERIENCE •
-                </textPath>
-              </text>
-            </svg>
-          </Box>
-
-          <Stack align="center" gap="md" mt="xl">
-            <Title className={classes.mainTitle} order={1} size={rem(42)}>
-              I'm Hiren Tandel
-            </Title>
-
-            <Box className={classes.typingBox}>
-              <Text className={classes.typedText} c="#00e6e6" size="xl">
-                {typedText}
-                <span className={classes.blink}>|</span>
-              </Text>
-            </Box>
-
-            <Button
-              component="a"
-              href="./Hiren_Tandel_Resume.pdf"
-              download
-              size="md"
-              className={classes.hireButton}
-              leftSection={<IconDownload size={18} />}
-              onClick={handleDownload}
-            >
-              Hire Me
-            </Button>
-          </Stack>
-        </Box>
-      </Container>
-    </Box>
+            </span>
+          </Text>
+          {/* Subtitle with background blur to increase visibility */}
+          <Paper
+            mt="xs"
+            px="md"
+            py={6}
+            radius="md"
+            style={{
+              backgroundColor: "rgba(0, 0, 0, 0.6)",
+              backdropFilter: "blur(5px)",
+              zIndex: 3,
+            }}
+          >
+            <Text fz="lg" c="gray.3">
+              Building interactive, scalable frontend applications.
+            </Text>
+          </Paper>
+        </Container>
+      </Box>
+      <About />
+    </>
   );
 }

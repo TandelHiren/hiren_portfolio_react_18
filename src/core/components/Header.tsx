@@ -1,55 +1,35 @@
-import { useState } from "react";
-import {
-  Burger,
-  Container,
-  Group,
-  Text,
-  ActionIcon,
-  rem,
-  Flex,
-} from "@mantine/core";
+import { useEffect } from "react";
+import { Group, Text, ActionIcon, rem, Flex } from "@mantine/core";
 import { IconSunMoon } from "@tabler/icons-react";
-import { useDisclosure } from "@mantine/hooks";
+import { useLocation, NavLink } from "react-router-dom";
 import classes from "./Header.module.css";
 
 const links = [
-  { link: "#home", label: "Home" },
-  { link: "#about", label: "About" },
-  { link: "#tech", label: "Tech Stack" },
-  { link: "#experience", label: "Experience" },
-  { link: "#education", label: "Education" },
-  { link: "#projects", label: "Projects" },
+  { link: "/", label: "Home" },
+  { link: "/about", label: "About" },
 ];
 
 export function Header() {
-  const [opened, { toggle }] = useDisclosure(false);
-  const [active, setActive] = useState(links[0].link);
+  const location = useLocation();
 
   const items = links.map((link) => (
-    <a
+    <NavLink
       key={link.label}
-      href={link.link}
+      to={link.link}
       className={classes.link}
-      data-active={active === link.link || undefined}
-      onClick={(event) => {
-        event.preventDefault();
-        setActive(link.link);
-      }}
+      data-active={location.pathname === link.link || undefined}
     >
       {link.label}
-    </a>
+    </NavLink>
   ));
 
   return (
     <header className={classes.header}>
-      {/* <Container size="lg" className={classes.inner}> */}
-      <Flex justify="space-between" align="center" w={"100%"}>
-        {/* Left: Logo */}
+      <Flex justify="space-between" align="center" w="100%">
         <Text fw={700} size={rem(16)} className={classes.logo} c="white">
           {"</>"} Hiren Tandel
         </Text>
 
-        {/* Right: Nav links and toggle */}
         <Group gap={20} className={classes.nav} visibleFrom="sm">
           {items}
           <ActionIcon variant="default" radius="xl">
@@ -57,7 +37,6 @@ export function Header() {
           </ActionIcon>
         </Group>
       </Flex>
-      {/* </Container> */}
     </header>
   );
 }

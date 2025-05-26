@@ -17,6 +17,7 @@ import { MenuLinks, ROUTER_LINKS } from "../shared/constants/menu.constant";
 import Master from "../core/components/Master";
 import PageNotFound from "../pages/fallback/PageNotFound";
 import Hero from "../pages/hero/Hero";
+import About from "../pages/about/AboutMe";
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
           {
             index: true, // This makes Hero the default for "/"
             element: <Hero />,
+          },
+          {
+            path: "about",
+            element: <About />,
           },
         ],
       },
