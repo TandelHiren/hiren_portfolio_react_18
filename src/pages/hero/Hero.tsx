@@ -7,6 +7,8 @@ import { Typewriter } from "react-simple-typewriter";
 import About from "../about/About";
 import Experience from "../experience/Experience";
 import Skills from "../skills/Skills";
+import Projects from "../projects/Projects";
+import Testimonials from "../testimonials/Testimonials";
 
 export default function HeroSection() {
   const particlesInit = useCallback(async (engine: any) => {
@@ -152,6 +154,8 @@ export default function HeroSection() {
       <About />
       <Skills />
       <Experience />
+      <Projects />
+      <Testimonials />
     </>
   );
 }

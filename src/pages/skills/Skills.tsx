@@ -35,8 +35,8 @@ export default function Skills() {
   return (
     <Box
       id="skills"
-      py={60}
-      px={{ base: 20, sm: 30, md: 50, lg: 80 }}
+      // py={60}
+      // px={{ base: 20, sm: 30, md: 50, lg: 80 }}
       style={{
         background: "#0a0a0a",
         color: "#fff",

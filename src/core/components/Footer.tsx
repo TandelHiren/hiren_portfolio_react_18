@@ -1,14 +1,16 @@
-import { Container, Text } from "@mantine/core";
+import { Container, Text, Group } from "@mantine/core";
 import classes from "./Footer.module.css";
 
 export function Footer() {
   return (
-    <div className={classes.footer}>
+    <footer className={classes.footer}>
       <Container className={classes.inner}>
-        <Text c="dimmed" size="sm" ta="center">
-          © 2025 All rights reserved.
-        </Text>
+        <Group justify="center" gap="xs">
+          <Text c="dimmed" size="sm" ta="center">
+            © {new Date().getFullYear()} All rights reserved.
+          </Text>
+        </Group>
       </Container>
-    </div>
+    </footer>
   );
 }

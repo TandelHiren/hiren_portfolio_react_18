@@ -33,7 +33,7 @@ function TimelineItem({ exp, index }: any) {
       ref={ref}
       style={{
         position: "relative",
-        marginBottom: 80,
+        // marginBottom: 80,
         display: "flex",
         justifyContent: isRight ? "flex-end" : "flex-start",
       }}
