@@ -1,27 +1,30 @@
-import { useEffect } from "react";
-import { Group, Text, ActionIcon, rem, Flex } from "@mantine/core";
-import { IconSunMoon } from "@tabler/icons-react";
-import { useLocation, NavLink } from "react-router-dom";
+import { Flex, Group, rem, Text } from "@mantine/core";
+import { NavLink, useLocation } from "react-router-dom";
 import classes from "./Header.module.css";
 
-const links = [
-  { link: "/", label: "Home" },
-  { link: "/about", label: "About" },
-];
+// const links = [
+//   { link: "/", label: "Home" },
+//   { link: "/about#about", label: "About" },
+//   { link: "/skills#skills", label: "Skill" },
+// ];
 
 export function Header() {
   const location = useLocation();
 
-  const items = links.map((link) => (
-    <NavLink
-      key={link.label}
-      to={link.link}
-      className={classes.link}
-      data-active={location.pathname === link.link || undefined}
-    >
-      {link.label}
-    </NavLink>
-  ));
+  // const items = links.map((link) => {
+  //   const [path] = link.link.split("#");
+
+  //   return (
+  //     <NavLink
+  //       key={link.label}
+  //       to={link.link}
+  //       className={classes.link}
+  //       data-active={location.pathname === path || undefined}
+  //     >
+  //       {link.label}
+  //     </NavLink>
+  //   );
+  // });
 
   return (
     <header className={classes.header}>
@@ -30,12 +33,9 @@ export function Header() {
           {"</>"} Hiren Tandel
         </Text>
 
-        <Group gap={20} className={classes.nav} visibleFrom="sm">
+        {/* <Group gap={20} className={classes.nav} visibleFrom="sm">
           {items}
-          <ActionIcon variant="default" radius="xl">
-            <IconSunMoon size={18} />
-          </ActionIcon>
-        </Group>
+        </Group> */}
       </Flex>
     </header>
   );

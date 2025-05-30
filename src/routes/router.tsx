@@ -1,23 +1,13 @@
-// src/routes/router.tsx
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
-
-// Fallback or common pages
-
-// Feature pages (add yours as needed)
-// import Dashboard from "../pages/dashboard/Dashboard";
-// import About from "../pages/About";
-// import Projects from "../pages/Projects";
-// import Contact from "../pages/Contact";
-
-// Optional constants
-import UiFallback from "../shared/common-ui/ui-fallback/UiFallback";
-import { HeroPageContent } from "../shared/constants/shared.constant";
-import { MenuLinks, ROUTER_LINKS } from "../shared/constants/menu.constant";
 import Master from "../core/components/Master";
+import About from "../pages/about/About";
 import PageNotFound from "../pages/fallback/PageNotFound";
 import Hero from "../pages/hero/Hero";
-import About from "../pages/about/AboutMe";
+import Skills from "../pages/skills/Skills";
+import UiFallback from "../shared/common-ui/ui-fallback/UiFallback";
+import { MenuLinks } from "../shared/constants/menu.constant";
+import { HeroPageContent } from "../shared/constants/shared.constant";
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +25,10 @@ export const router = createBrowserRouter([
           {
             path: "about",
             element: <About />,
+          },
+          {
+            path: "skills",
+            element: <Skills />,
           },
         ],
       },

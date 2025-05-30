@@ -5,6 +5,8 @@ import { loadSlim } from "tsparticles-slim";
 import { loadImageShape } from "tsparticles-shape-image";
 import { Typewriter } from "react-simple-typewriter";
 import About from "../about/About";
+import Experience from "../experience/Experience";
+import Skills from "../skills/Skills";
 
 export default function HeroSection() {
   const particlesInit = useCallback(async (engine: any) => {
@@ -148,6 +150,8 @@ export default function HeroSection() {
         </Container>
       </Box>
       <About />
+      <Skills />
+      <Experience />
     </>
   );
 }
