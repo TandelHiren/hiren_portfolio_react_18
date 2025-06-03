@@ -18,9 +18,7 @@ const skills = [
 export default function Skills() {
   useEffect(() => {
     const style = document.createElement("style");
-    style.innerHTML = `
-      @keyframes rotate { to { transform: rotate(360deg); } }
-    `;
+    style.innerHTML = `@keyframes rotate { to { transform: rotate(360deg); } }`;
     document.head.appendChild(style);
 
     const hash = window.location.hash;
@@ -35,12 +33,12 @@ export default function Skills() {
   return (
     <Box
       id="skills"
-      // py={60}
-      // px={{ base: 20, sm: 30, md: 50, lg: 80 }}
+      py={60}
+      px={{ base: 20, sm: 30, md: 50, lg: 80 }}
       style={{
         background: "#0a0a0a",
         color: "#fff",
-        overflowX: "hidden",
+        overflow: "visible", // ✅ Ensure NO scroll inside
       }}
     >
       <Title order={2} ta="center" mb="xl" c="cyan.4">
@@ -61,7 +59,6 @@ export default function Skills() {
                 borderRadius: "16px",
                 boxShadow: "0 4px 16px rgba(0, 224, 255, 0.2)",
                 padding: "16px",
-                transformOrigin: "center",
               }}
             >
               <Center mb="sm">

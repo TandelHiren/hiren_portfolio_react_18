@@ -6,13 +6,25 @@ import {
   Card,
   Group,
   Container,
+  SimpleGrid,
   Center,
+  type CardProps,
 } from "@mantine/core";
-import { Carousel } from "@mantine/carousel";
-import { IconQuote } from "@tabler/icons-react";
+import {
+  IconQuote,
+  IconStar,
+  IconStarHalf,
+  IconStarOff,
+} from "@tabler/icons-react";
 import { motion } from "framer-motion";
-import Autoplay from "embla-carousel-autoplay";
-import { useRef } from "react";
+import { forwardRef } from "react";
+
+// ✅ Motion-enabled Card using forwardRef to avoid TypeScript errors
+const MotionCard = motion(
+  forwardRef<HTMLDivElement, CardProps>((props, ref) => (
+    <Card ref={ref} {...props} />
+  ))
+);
 
 const testimonials = [
   {
@@ -22,6 +34,7 @@ const testimonials = [
     role: "Manager",
     company: "Intoxa Lock",
     avatar: "./vishal_patel.svg",
+    rating: 5,
   },
   {
     quote:
@@ -30,6 +43,7 @@ const testimonials = [
     role: "Tech Lead",
     company: "Aekatra",
     avatar: "./vishal_patel.svg",
+    rating: 3.5,
   },
   {
     quote:
@@ -38,12 +52,26 @@ const testimonials = [
     role: "Manager",
     company: "National Auto Care",
     avatar: "./khyati_patel.jpg",
+    rating: 4,
   },
 ];
 
-export default function Testimonials() {
-  const autoplay = useRef(Autoplay({ delay: 4000 }));
+// ⭐ Helper to render stars
+const getStars = (rating: number) => {
+  const stars = [];
+  for (let i = 1; i <= 5; i++) {
+    if (rating >= i) {
+      stars.push(<IconStar key={i} size={18} color="gold" />);
+    } else if (rating + 0.5 === i) {
+      stars.push(<IconStarHalf key={i} size={18} color="gold" />);
+    } else {
+      stars.push(<IconStarOff key={i} size={18} color="#666" />);
+    }
+  }
+  return stars;
+};
 
+export default function Testimonials() {
   return (
     <Box
       id="testimonials"
@@ -51,70 +79,61 @@ export default function Testimonials() {
       px={{ base: 20, sm: 30, md: 50, lg: 100 }}
       style={{ backgroundColor: "#0a0a0a", color: "#fff" }}
     >
-      <Container size="md">
+      <Container size="lg">
         <Title order={2} ta="center" mb="xl" c="cyan.4">
-          Testimonials
+          Testimonial
         </Title>
+        <Text ta="center" c="gray.4" mb="xl">
+          Don't just take our word for it – see what actual users of our service
+          have to say about their experience.
+        </Text>
 
-        <Carousel
-          withIndicators
-          height="auto"
-          slideSize="100%"
-          align="center"
-          loop
-          plugins={[autoplay.current]}
-          styles={{
-            indicator: {
-              backgroundColor: "#555",
-              "&[data-active]": { backgroundColor: "cyan" },
-            },
-          }}
-        >
+        <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="xl">
           {testimonials.map((t, index) => (
-            <Carousel.Slide key={index}>
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, delay: index * 0.2 }}
-                style={{ display: "flex", justifyContent: "center" }}
-              >
-                <Card
-                  shadow="xl"
-                  radius="md"
-                  p="xl"
-                  style={{
-                    backgroundColor: "#161616",
-                    color: "#fff",
-                    minHeight: 320,
-                    maxWidth: 500,
-                    width: "100%",
-                    textAlign: "center",
-                    boxShadow: "0 8px 24px rgba(0, 224, 255, 0.15)",
-                  }}
-                >
-                  <Center mb="sm">
-                    <IconQuote size={32} color="cyan" />
-                  </Center>
-                  <Text fz="sm" c="gray.3" mb="lg">
-                    "{t.quote}"
+            <MotionCard
+              key={index}
+              shadow="lg"
+              radius="md"
+              p="xl"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6, delay: index * 0.2 }}
+              whileHover={{ scale: 1.03 }}
+              style={{
+                backgroundColor: "#161616",
+                color: "#fff",
+                textAlign: "center",
+                border: "1px solid #00e0ff33",
+                boxShadow: "0 6px 20px rgba(0, 224, 255, 0.12)",
+                transition: "all 0.3s ease",
+              }}
+            >
+              <Center mb="sm">
+                <IconQuote size={28} color="cyan" />
+              </Center>
+              <Text fz="sm" c="gray.3" mb="lg" style={{ minHeight: 100 }}>
+                “{t.quote}”
+              </Text>
+
+              <Center mb="xs" style={{ gap: 4 }}>
+                {getStars(t.rating)}
+              </Center>
+
+              <Group justify="center" mt="md">
+                <Avatar src={t.avatar} radius="xl" size="md" />
+                <Box>
+                  <Text fw={600} fz="sm">
+                    {t.name}
                   </Text>
-                  <Group justify="center" mt="md">
-                    <Avatar src={t.avatar} radius="xl" size="md" />
-                    <Box>
-                      <Text fw={600} fz="sm">
-                        {t.name}
-                      </Text>
-                      <Text fz="xs" c="gray.5">
-                        {t.role}, {t.company}
-                      </Text>
-                    </Box>
-                  </Group>
-                </Card>
-              </motion.div>
-            </Carousel.Slide>
+                  <Text fz="xs" c="gray.5">
+                    {t.role}, {t.company}
+                  </Text>
+                </Box>
+              </Group>
+            </MotionCard>
           ))}
-        </Carousel>
+        </SimpleGrid>
       </Container>
     </Box>
   );

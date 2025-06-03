@@ -28,9 +28,11 @@ export default function About() {
     <Box
       id="about"
       pos="relative"
+      // Offset for sticky navbar
       style={{
         backgroundColor: "#0a0a0a",
-        padding: "60px 0",
+        paddingTop: "100px", // Add padding top
+        paddingBottom: "60px",
         overflow: "hidden",
       }}
     >

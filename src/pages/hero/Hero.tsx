@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { Box, Text, Container, Paper, Button } from "@mantine/core";
+import { Box, Text, Container, Paper } from "@mantine/core";
 import Particles from "react-tsparticles";
 import { loadSlim } from "tsparticles-slim";
 import { loadImageShape } from "tsparticles-shape-image";
@@ -9,8 +9,9 @@ import Experience from "../experience/Experience";
 import Skills from "../skills/Skills";
 import Projects from "../projects/Projects";
 import Testimonials from "../testimonials/Testimonials";
+import Contact from "../contact/Contact";
 
-export default function HeroSection() {
+export default function Hero() {
   const particlesInit = useCallback(async (engine: any) => {
     await loadSlim(engine);
     await loadImageShape(engine);
@@ -84,7 +85,7 @@ export default function HeroSection() {
           top: 0,
           left: 0,
           zIndex: 0,
-          pointerEvents: "none", // 👈 avoids blocking mouse/text
+          pointerEvents: "none",
         }}
       />
     ),
@@ -93,11 +94,13 @@ export default function HeroSection() {
 
   return (
     <>
+      {/* Hero Section with Animated Particles */}
       <Box
+        id="hero"
         pos="relative"
         h="100vh"
         w="100%"
-        style={{ backgroundColor: "#000", overflow: "hidden" }}
+        style={{ backgroundColor: "#000" }} // ✅ no overflow:hidden
       >
         {MemoizedParticles}
 
@@ -133,7 +136,7 @@ export default function HeroSection() {
               />
             </span>
           </Text>
-          {/* Subtitle with background blur to increase visibility */}
+
           <Paper
             mt="xs"
             px="md"
@@ -151,11 +154,14 @@ export default function HeroSection() {
           </Paper>
         </Container>
       </Box>
+
+      {/* Other Sections */}
       <About />
       <Skills />
       <Experience />
       <Projects />
       <Testimonials />
+      <Contact />
     </>
   );
 }

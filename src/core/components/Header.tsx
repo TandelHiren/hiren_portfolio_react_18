@@ -1,30 +1,47 @@
+import { useEffect, useState } from "react";
 import { Flex, Group, rem, Text } from "@mantine/core";
-import { NavLink, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { Link as ScrollLink } from "react-scroll";
 import classes from "./Header.module.css";
 
-// const links = [
-//   { link: "/", label: "Home" },
-//   { link: "/about#about", label: "About" },
-//   { link: "/skills#skills", label: "Skill" },
-// ];
+const links = [
+  { label: "Home", target: "hero" },
+  { label: "About", target: "about" },
+  { label: "Skills", target: "skills" },
+  { label: "Experience", target: "experience" },
+  { label: "Projects", target: "projects" },
+  { label: "Testimonials", target: "testimonials" },
+  { label: "Contact", target: "contact" },
+];
 
 export function Header() {
+  const [active, setActive] = useState("hero");
   const location = useLocation();
 
-  // const items = links.map((link) => {
-  //   const [path] = link.link.split("#");
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = links.map((link) =>
+        document.getElementById(link.target)
+      );
 
-  //   return (
-  //     <NavLink
-  //       key={link.label}
-  //       to={link.link}
-  //       className={classes.link}
-  //       data-active={location.pathname === path || undefined}
-  //     >
-  //       {link.label}
-  //     </NavLink>
-  //   );
-  // });
+      const scrollPos = window.scrollY + 100;
+
+      sections.forEach((section, idx) => {
+        if (section) {
+          const top = section.offsetTop;
+          const bottom = top + section.offsetHeight;
+
+          if (scrollPos >= top && scrollPos < bottom) {
+            setActive(links[idx].target);
+          }
+        }
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // initialize
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <header className={classes.header}>
@@ -33,9 +50,21 @@ export function Header() {
           {"</>"} Hiren Tandel
         </Text>
 
-        {/* <Group gap={20} className={classes.nav} visibleFrom="sm">
-          {items}
-        </Group> */}
+        <Group gap={20} className={classes.nav} visibleFrom="sm">
+          {links.map((link) => (
+            <ScrollLink
+              key={link.label}
+              to={link.target}
+              smooth={true}
+              duration={500}
+              offset={-70}
+              className={classes.link}
+              data-active={active === link.target || undefined}
+            >
+              {link.label}
+            </ScrollLink>
+          ))}
+        </Group>
       </Flex>
     </header>
   );
