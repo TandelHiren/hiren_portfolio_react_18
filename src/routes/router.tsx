@@ -1,10 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import Master from "../core/components/Master";
+import Home from "../pages/Home";
 import About from "../pages/about/About";
-import PageNotFound from "../pages/fallback/PageNotFound";
-import Hero from "../pages/hero/Hero";
 import Skills from "../pages/skills/Skills";
+import Hero from "../pages/hero/Hero";
+import PageNotFound from "../pages/fallback/PageNotFound";
 import UiFallback from "../shared/common-ui/ui-fallback/UiFallback";
 import { MenuLinks } from "../shared/constants/menu.constant";
 import { HeroPageContent } from "../shared/constants/shared.constant";
@@ -12,14 +13,17 @@ import { HeroPageContent } from "../shared/constants/shared.constant";
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <App />, // Global wrapper (Modals, Notifications)
     children: [
       {
-        path: "",
-        element: <Master />,
+        element: <Master />, // Header + Footer layout
         children: [
           {
-            index: true, // This makes Hero the default for "/"
+            index: true, // Route: "/"
+            element: <Home />, // Home includes Hero, About, Skills, etc.
+          },
+          {
+            path: "hero",
             element: <Hero />,
           },
           {

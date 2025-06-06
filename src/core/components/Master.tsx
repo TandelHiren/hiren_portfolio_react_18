@@ -1,21 +1,30 @@
-// src/core/components/Master.tsx
 import { Outlet } from "react-router-dom";
-import { Footer } from "./Footer";
+import { Box } from "@mantine/core";
 import { Header } from "./Header";
+import { Footer } from "./Footer";
 
 const Master = () => {
   return (
-    <>
+    <Box
+      style={{
+        height: "100vh",
+        overflowX: "hidden", // ✅ allow scroll, prevent side scroll
+      }}
+    >
       <Header />
 
-      <main>
-        {/* <Container> */}
+      <Box
+        component="main"
+        style={{
+          minHeight: "100vh",
+          overflowX: "hidden", // ✅ allow scroll, prevent side scroll
+        }}
+      >
         <Outlet />
-        {/* </Container> */}
-      </main>
+      </Box>
 
       <Footer />
-    </>
+    </Box>
   );
 };
 

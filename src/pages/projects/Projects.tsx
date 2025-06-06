@@ -6,17 +6,17 @@ import {
   Card,
   Anchor,
   Group,
-  SimpleGrid,
   Avatar,
   Divider,
   ActionIcon,
   Tooltip,
   Badge,
+  ScrollArea,
   type CardProps,
 } from "@mantine/core";
 import { IconExternalLink, IconStar, IconEye } from "@tabler/icons-react";
 import { motion, useInView } from "framer-motion";
-import { useRef, forwardRef } from "react";
+import { useRef, forwardRef, useEffect, useState } from "react";
 
 // ✅ Type-safe MotionCard using forwardRef
 const MotionCard = motion(
@@ -119,13 +119,37 @@ const projects = [
 ];
 
 export default function Projects() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, amount: 0.2 });
+  const containerRef = useRef(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(containerRef, { once: true, amount: 0.2 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Auto-scroll effect with pause on hover
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    let animationFrameId: number;
+
+    const autoScroll = () => {
+      if (!isHovered && el) {
+        el.scrollLeft += 1;
+        if (el.scrollLeft + el.clientWidth >= el.scrollWidth) {
+          el.scrollLeft = 0; // loop back to start
+        }
+      }
+      animationFrameId = requestAnimationFrame(autoScroll);
+    };
+
+    animationFrameId = requestAnimationFrame(autoScroll);
+
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [isHovered]);
 
   return (
     <Box
       id="projects"
-      ref={ref}
+      ref={containerRef}
       py={60}
       px={{ base: 20, sm: 30, md: 50, lg: 100 }}
       style={{ backgroundColor: "#0a0a0a", color: "#fff" }}
@@ -135,97 +159,107 @@ export default function Projects() {
           My Projects
         </Title>
 
-        <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="xl">
-          {projects.map((project, index) => (
-            <MotionCard
-              key={index}
-              shadow="lg"
-              radius="md"
-              padding="lg"
-              initial={{ opacity: 0, y: 40 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ scale: 1.02 }}
-              style={{
-                backgroundColor: "#161616",
-                color: "#fff",
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                boxShadow: "0 4px 16px rgba(0, 224, 255, 0.2)",
-              }}
-            >
-              <Box>
-                <Text fw={700} fz="md" mb="xs" style={{ color: "#00e0ff" }}>
-                  {project.title}
-                </Text>
-                <Group gap="xs" mb="sm">
-                  <Avatar src={project.avatar} size="sm" radius="xl" />
-                  <Box>
-                    <Text fw={600} fz="sm">
-                      {project.author}
+        <ScrollArea
+          type="never"
+          offsetScrollbars
+          viewportRef={scrollRef}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <Group wrap="nowrap" gap="xl" style={{ paddingBottom: 10 }}>
+            {projects.map((project, index) => (
+              <MotionCard
+                key={index}
+                shadow="lg"
+                radius="md"
+                padding="lg"
+                initial={{ opacity: 0, y: 40 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ scale: 1.02 }}
+                style={{
+                  minWidth: 300,
+                  maxWidth: 320,
+                  backgroundColor: "#161616",
+                  color: "#fff",
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  boxShadow: "0 4px 16px rgba(0, 224, 255, 0.2)",
+                }}
+              >
+                <Box>
+                  <Text fw={700} fz="md" mb="xs" style={{ color: "#00e0ff" }}>
+                    {project.title}
+                  </Text>
+                  <Group gap="xs" mb="sm">
+                    <Avatar src={project.avatar} size="sm" radius="xl" />
+                    <Box>
+                      <Text fw={600} fz="sm">
+                        {project.author}
+                      </Text>
+                      <Text fz="xs" c="gray.5">
+                        {project.username}
+                      </Text>
+                    </Box>
+                  </Group>
+                  <Tooltip label={project.description} multiline>
+                    <Text
+                      fz="sm"
+                      mb="sm"
+                      style={{
+                        display: "-webkit-box",
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {project.description}
                     </Text>
-                    <Text fz="xs" c="gray.5">
-                      {project.username}
-                    </Text>
-                  </Box>
-                </Group>
-                <Tooltip label={project.description} multiline>
-                  <Text
+                  </Tooltip>
+                  <Group gap={4} mb="sm" wrap="wrap">
+                    {project.badges.map((tech, i) => (
+                      <Badge key={i} size="xs" variant="light" color="cyan">
+                        {tech}
+                      </Badge>
+                    ))}
+                  </Group>
+                </Box>
+
+                <Divider my="sm" />
+                <Group justify="space-between">
+                  <Group gap="xs">
+                    <Tooltip label="Star this project">
+                      <ActionIcon variant="subtle" color="gray">
+                        <IconStar size={16} />
+                      </ActionIcon>
+                    </Tooltip>
+                    <Tooltip label="Views">
+                      <ActionIcon variant="subtle" color="gray">
+                        <IconEye size={16} />
+                      </ActionIcon>
+                    </Tooltip>
+                  </Group>
+                  <Anchor
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    c="cyan"
                     fz="sm"
-                    mb="sm"
                     style={{
-                      display: "-webkit-box",
-                      WebkitLineClamp: 3,
-                      WebkitBoxOrient: "vertical",
-                      overflow: "hidden",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 4,
                     }}
                   >
-                    {project.description}
-                  </Text>
-                </Tooltip>
-                <Group gap={4} mb="sm" wrap="wrap">
-                  {project.badges.map((tech, i) => (
-                    <Badge key={i} size="xs" variant="light" color="cyan">
-                      {tech}
-                    </Badge>
-                  ))}
+                    View <IconExternalLink size={14} />
+                  </Anchor>
                 </Group>
-              </Box>
-
-              <Divider my="sm" />
-              <Group justify="space-between">
-                <Group gap="xs">
-                  <Tooltip label="Star this project">
-                    <ActionIcon variant="subtle" color="gray">
-                      <IconStar size={16} />
-                    </ActionIcon>
-                  </Tooltip>
-                  <Tooltip label="Views">
-                    <ActionIcon variant="subtle" color="gray">
-                      <IconEye size={16} />
-                    </ActionIcon>
-                  </Tooltip>
-                </Group>
-                <Anchor
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  c="cyan"
-                  fz="sm"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 4,
-                  }}
-                >
-                  View <IconExternalLink size={14} />
-                </Anchor>
-              </Group>
-            </MotionCard>
-          ))}
-        </SimpleGrid>
+              </MotionCard>
+            ))}
+          </Group>
+        </ScrollArea>
       </Container>
     </Box>
   );

@@ -4,12 +4,6 @@ import Particles from "react-tsparticles";
 import { loadSlim } from "tsparticles-slim";
 import { loadImageShape } from "tsparticles-shape-image";
 import { Typewriter } from "react-simple-typewriter";
-import About from "../about/About";
-import Experience from "../experience/Experience";
-import Skills from "../skills/Skills";
-import Projects from "../projects/Projects";
-import Testimonials from "../testimonials/Testimonials";
-import Contact from "../contact/Contact";
 
 export default function Hero() {
   const particlesInit = useCallback(async (engine: any) => {
@@ -156,12 +150,12 @@ export default function Hero() {
       </Box>
 
       {/* Other Sections */}
-      <About />
+      {/* <About />
       <Skills />
       <Experience />
       <Projects />
       <Testimonials />
-      <Contact />
+      <Contact /> */}
     </>
   );
 }
