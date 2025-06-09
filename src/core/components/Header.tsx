@@ -19,39 +19,40 @@ export function Header() {
   const [opened, { toggle }] = useDisclosure(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
+  // Detect if header should have scrolled background
   useEffect(() => {
     const onScroll = () => {
-      const scrollY = window.scrollY;
-      setIsScrolled(scrollY > 10); // Set to true when user scrolls
+      setIsScrolled(window.scrollY > 10);
     };
-
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Use IntersectionObserver for section tracking
   useEffect(() => {
-    const handleScroll = () => {
-      let currentSection = active;
-
-      for (let link of links) {
-        const section = document.getElementById(link.target);
-        if (section) {
-          const rect = section.getBoundingClientRect();
-          const offset = 150;
-          if (rect.top <= offset && rect.bottom > offset) {
-            currentSection = link.target;
-            break;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute("id");
+            if (id) setActive(id);
           }
-        }
+        });
+      },
+      {
+        root: null,
+        rootMargin: "0px 0px -70% 0px", // Adjust this to match your header height
+        threshold: 0.1,
       }
+    );
 
-      setActive(currentSection);
-    };
+    links.forEach((link) => {
+      const section = document.getElementById(link.target);
+      if (section) observer.observe(section);
+    });
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => observer.disconnect();
   }, []);
 
   return (

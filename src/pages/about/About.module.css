@@ -7,3 +7,8 @@
   background-color: var(--mantine-color-body);
   transition: transform 0.3s ease;
 }
+
+.link[data-active="true"] {
+  color: #00e0ff;
+  font-weight: bold;
+}
